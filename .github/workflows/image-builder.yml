@@ -1,19 +1,38 @@
+# name: ImageBuilder
+# Run this workflow every time a new commit pushed to your repository
+# on: push
+# jobs:
+#   build:
+#     # runs-on: self-hosted
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Import Secrets
+#         uses: hashicorp/vault-action@v2
+#         with:
+#           url: http://vault-ent:8200
+          # url: https://vault-cluster.vault.3262e218-24bf-49f9-93e0-681713aa750c.aws.hashicorp.cloud:8200
+#           tlsSkipVerify: true
+          # token: ${{ secrets.VAULT_TOKEN }}
+          # secrets: secret/data/ci app_secret
+#       - name: Build Docker Image
+#         # run: echo $APP_SECRET
+#         run: docker build ecosystem/vault-github-action --file Dockerfile --build-arg app_secret="${{ env.APP_SECRET }}" -t vault-action-exampleapp
+
 name: ImageBuilder
 # Run this workflow every time a new commit pushed to your repository
 on: push
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Import Secrets
         uses: hashicorp/vault-action@v2
         with:
-          url: http://vault-ent:8200
-          tlsSkipVerify: true
+          url: https://vault-cluster.vault.3262e218-24bf-49f9-93e0-681713aa750c.aws.hashicorp.cloud:8200
           token: ${{ secrets.VAULT_TOKEN }}
-          secrets: |
-            secret/data/ci app_secret | APP_SECRET
-      - name: Build Docker Image
-        # run: echo $APP_SECRET
-        run: docker build ecosystem/vault-github-action --file Dockerfile --build-arg app_secret="${{ env.APP_SECRET }}" -t vault-action-exampleapp
+          secrets: secret/data/ci app_secret
+#       - name: Build Docker Image
+#         # run: echo $APP_SECRET
+#         run: docker build ecosystem/vault-github-action --file Dockerfile --build-arg app_secret="${{ env.APP_SECRET }}" -t vault-action-exampleapp
