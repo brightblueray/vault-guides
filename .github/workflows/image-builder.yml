@@ -31,7 +31,9 @@ jobs:
         uses: hashicorp/vault-action@v2
         with:
           url: https://vault-cluster.vault.3262e218-24bf-49f9-93e0-681713aa750c.aws.hashicorp.cloud:8200
-          token: ${{ secrets.VAULT_TOKEN }}
+          # token: ${{ secrets.VAULT_TOKEN }}
+          role: jwt_role
+          method: jwt
           namespace: admin
           secrets: secret/data/ci app_secret
       - 
