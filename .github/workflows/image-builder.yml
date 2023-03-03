@@ -1,53 +1,79 @@
-# name: ImageBuilder
-# Run this workflow every time a new commit pushed to your repository
+# # name: ImageBuilder
+# # Run this workflow every time a new commit pushed to your repository
+# # on: push
+# # jobs:
+# #   build:
+# #     # runs-on: self-hosted
+# #     runs-on: ubuntu-latest
+# #     steps:
+# #       - uses: actions/checkout@v3
+# #       - name: Import Secrets
+# #         uses: hashicorp/vault-action@v2
+# #         with:
+# #           url: http://vault-ent:8200
+#           # url: https://vault-cluster.vault.3262e218-24bf-49f9-93e0-681713aa750c.aws.hashicorp.cloud:8200
+# #           tlsSkipVerify: true
+#           # token: ${{ secrets.VAULT_TOKEN }}
+#           # secrets: secret/data/ci app_secret
+# #       - name: Build Docker Image
+# #         # run: echo $APP_SECRET
+# #         run: docker build ecosystem/vault-github-action --file Dockerfile --build-arg app_secret="${{ env.APP_SECRET }}" -t vault-action-exampleapp
+
+# name: JWT Access Test
+# # Run this workflow every time a new commit pushed to your repository
 # on: push
+
+# permissions:
+#   id-token: write
+#   contents: read
+
 # jobs:
-#   build:
-#     # runs-on: self-hosted
+#   read-secret:
 #     runs-on: ubuntu-latest
 #     steps:
-#       - uses: actions/checkout@v3
-#       - name: Import Secrets
-#         uses: hashicorp/vault-action@v2
-#         with:
-#           url: http://vault-ent:8200
-          # url: https://vault-cluster.vault.3262e218-24bf-49f9-93e0-681713aa750c.aws.hashicorp.cloud:8200
-#           tlsSkipVerify: true
-          # token: ${{ secrets.VAULT_TOKEN }}
-          # secrets: secret/data/ci app_secret
-#       - name: Build Docker Image
-#         # run: echo $APP_SECRET
-#         run: docker build ecosystem/vault-github-action --file Dockerfile --build-arg app_secret="${{ env.APP_SECRET }}" -t vault-action-exampleapp
+#     # Checkout the repo
+#     # - name Checkout
+#     - uses: actions/checkout@v3
 
-name: ImageBuilder
-# Run this workflow every time a new commit pushed to your repository
-on: push
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Import Secrets
-        uses: hashicorp/vault-action@v2
-        with:
-          url: https://vault-cluster.vault.3262e218-24bf-49f9-93e0-681713aa750c.aws.hashicorp.cloud:8200
-          # token: ${{ secrets.VAULT_TOKEN }}
-          role: jwt_role
-          method: jwt
-          namespace: admin
-          secrets: secret/data/ci app_secret
-      - 
-        name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ryjewski
-          password: ${{env.APP_SECRET}}
+#     - name Troubleshooting
+#     #       run: |
+# #           curl -sSL -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL" | \
+# #           jq "{ jwt: .value, role: \"$VAULT_ROLE\" }" > ./token.json
+            
+# #           echo 'GitHub Actions Token Claims'
+# #           cat ./token.json | jq -r '.jwt | split(".") | .[1] | @base64d' | jq
+# #           echo 'Vault Login Response'
+# #           curl -sSLf -X POST -H "Content-Type: application/json" -H "X-Vault-Namespace: admin" --data @token.json $VAULT_URL/v1/auth/$VAULT_AUTH_PATH/login
+# #           # Remove the token file when we're done (if we don't fail)
+# #           rm ./token.json
+# #       env:
+# #         VAULT_URL: ${{ secrets.VAULT_ADDR }}
+# #         VAULT_AUTH_PATH: jwt
+# #         VAULT_ROLE: ${{ secrets.VAULT_ROLE }}
 
-      # - name: Hello world action step
-      #   id: hello
-      #   uses: actions/hello-world-docker-action@v2
-      #   with:
-      #     who-to-greet: "${{env.APP_SECRET}}"
-      # # Use the output from the `hello` step
-      # - name: Get the output time
-      #   run: echo "The time was ${{ steps.hello.outputs.time }}"
+# #       - name: Import Secrets
+# #         uses: hashicorp/vault-action@v2
+# #         with:
+# #           # url: https://vault-cluster.vault.3262e218-24bf-49f9-93e0-681713aa750c.aws.hashicorp.cloud:8200
+# #           url: http://127.0.0.1:8200
+# #           tlsSkipVerify: true
+# #           # token: ${{ secrets.VAULT_TOKEN }}
+# #           role: jwt_role
+# #           method: jwt
+# #           namespace: admin
+# #           secrets: secret/data/ci app_secret
+# #       - 
+# #         name: Login to DockerHub
+# #         uses: docker/login-action@v2
+# #         with:
+# #           username: ryjewski
+# #           password: ${{env.APP_SECRET}}
+
+# #       # - name: Hello world action step
+# #       #   id: hello
+# #       #   uses: actions/hello-world-docker-action@v2
+# #       #   with:
+# #       #     who-to-greet: "${{env.APP_SECRET}}"
+# #       # # Use the output from the `hello` step
+# #       # - name: Get the output time
+# #       #   run: echo "The time was ${{ steps.hello.outputs.time }}"
